@@ -3,6 +3,7 @@ package ar.edufmass.spring7beerapp.services;
 import ar.edufmass.spring7beerapp.model.Customer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -73,6 +74,17 @@ public class CustomerServiceImpl implements CustomerService {
     public void updateCustomerById(UUID customerId, Customer customer) {
         Customer dbCustomer = customerMap.get(customerId);
         dbCustomer.setName(customer.getName());
+
+        customerMap.put(dbCustomer.getId(), dbCustomer);
+    }
+
+    @Override
+    public void patchCustomerById(UUID customerId, Customer customer) {
+        Customer dbCustomer = customerMap.get(customerId);
+
+        if (StringUtils.hasText(customer.getName())) {
+            dbCustomer.setName(customer.getName());
+        }
 
         customerMap.put(dbCustomer.getId(), dbCustomer);
     }
