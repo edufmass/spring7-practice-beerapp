@@ -4,6 +4,7 @@ import ar.edufmass.spring7beerapp.model.Beer;
 import ar.edufmass.spring7beerapp.model.BeerStyle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -106,6 +107,33 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public void deleteById(UUID beerId) {
         beerMap.remove(beerId);
+    }
+
+    @Override
+    public void patchBeerById(UUID beerId, Beer beer) {
+        Beer dbBeer = beerMap.get(beerId);
+
+        if (StringUtils.hasText(beer.getBeerName())) {
+            dbBeer.setBeerName(beer.getBeerName());
+        }
+
+        if (beer.getBeerStyle() != null) {
+            dbBeer.setBeerStyle(beer.getBeerStyle());
+        }
+
+        if (beer.getPrice() != null) {
+            dbBeer.setPrice(beer.getPrice());
+        }
+
+        if (beer.getQuantityOnHand() != null) {
+            dbBeer.setQuantityOnHand(beer.getQuantityOnHand());
+        }
+
+        if (StringUtils.hasText(beer.getUpc())) {
+            dbBeer.setUpc(beer.getUpc());
+        }
+
+        beerMap.put(dbBeer.getId(), dbBeer);
     }
 
 }
