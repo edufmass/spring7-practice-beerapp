@@ -26,7 +26,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "{customerId}", method = RequestMethod.GET)
-    public Customer getCustomerById(@PathVariable("customerId") UUID customerId) {
+    public Customer getCustomerById(@PathVariable UUID customerId) {
 
         log.debug("Get Customer by Id - in controller");
 
@@ -34,13 +34,21 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> handlePost(@RequestBody Customer customer){
+    public ResponseEntity<Void> handlePost(@RequestBody Customer customer) {
         Customer savedCustomer = customerService.saveNewCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/customer/" + savedCustomer.getId().toString());
 
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    }
+
+    @PutMapping("{customerId}")
+    public ResponseEntity<Void> updateCustomerByID(@PathVariable UUID customerId, @RequestBody Customer customer) {
+
+        customerService.updateCustomerById(customerId, customer);
+
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
 }
