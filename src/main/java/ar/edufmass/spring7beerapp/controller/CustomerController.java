@@ -20,7 +20,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @RequestMapping(value="/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<Customer> listAllCustomers(){
         return customerService.getAllCustomers();
     }
