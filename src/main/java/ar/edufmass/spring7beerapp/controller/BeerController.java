@@ -2,7 +2,6 @@ package ar.edufmass.spring7beerapp.controller;
 
 import ar.edufmass.spring7beerapp.model.Beer;
 import ar.edufmass.spring7beerapp.services.BeerService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -16,17 +15,19 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/beer")
 public class BeerController {
+
+    public static final String BEER_PATH = "/api/v1/beer";
+    public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 
     private final BeerService beerService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(value = BEER_PATH)
     public List<Beer> listBeers(){
         return beerService.listBeers();
     }
 
-    @RequestMapping(value = "/{beerId}", method = RequestMethod.GET)
+    @GetMapping(BEER_PATH_ID)
     public Beer getBeerById(@PathVariable UUID beerId){
 
         log.debug("Get Beer by Id - in controller");
@@ -34,7 +35,7 @@ public class BeerController {
         return beerService.getBeerById(beerId);
     }
 
-    @PostMapping
+    @PostMapping(BEER_PATH)
     //@RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> handlePost(@RequestBody Beer beer){
 
@@ -46,7 +47,7 @@ public class BeerController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @PutMapping("{beerId}")
+    @PutMapping(BEER_PATH_ID)
     public ResponseEntity<Void> updateById(@PathVariable UUID beerId, @RequestBody Beer beer){
 
         beerService.updateBeerById(beerId, beer);
@@ -54,7 +55,7 @@ public class BeerController {
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping("{beerId}")
+    @PatchMapping(BEER_PATH_ID)
     public ResponseEntity<Void> patchById(@PathVariable UUID beerId, @RequestBody Beer beer){
 
         beerService.patchBeerById(beerId, beer);
@@ -62,7 +63,7 @@ public class BeerController {
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("{beerId}")
+    @DeleteMapping(BEER_PATH_ID)
     public ResponseEntity<Void> deleteById(@PathVariable UUID beerId){
 
         beerService.deleteById(beerId);
