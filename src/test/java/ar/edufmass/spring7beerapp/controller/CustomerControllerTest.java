@@ -39,32 +39,6 @@ class CustomerControllerTest {
     }
 
     @Test
-    void testCreatCustomer() throws Exception {
-        Customer customer = customerServiceImpl.getAllCustomers().getFirst();
-        customer.setId(null);
-        customer.setVersion(null);
-
-        given(customerService.saveNewCustomer(any(Customer.class))).willReturn(customerServiceImpl.getAllCustomers().get(1));
-
-        mockMvc.perform(post("/api/v1/customer").contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(customer)))
-                .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"));
-    }
-
-    @Test
-    void listAllCustomers() throws Exception {
-        given(customerService.getAllCustomers()).willReturn(customerServiceImpl.getAllCustomers());
-
-        mockMvc.perform(get("/api/v1/customer")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()", is(3)));
-    }
-
-    @Test
     void getCustomerById() throws Exception {
         Customer customer = customerServiceImpl.getAllCustomers().getFirst();
 
@@ -76,5 +50,31 @@ class CustomerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is(customer.getName())));
 
+    }
+
+    @Test
+    void listAllCustomers() throws Exception {
+        given(customerService.getAllCustomers()).willReturn(customerServiceImpl.getAllCustomers());
+
+        mockMvc.perform(get("/api/v1/customer")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()", is(3)));
+    }
+
+    @Test
+    void testCreatCustomer() throws Exception {
+        Customer customer = customerServiceImpl.getAllCustomers().getFirst();
+        customer.setId(null);
+        customer.setVersion(null);
+
+        given(customerService.saveNewCustomer(any(Customer.class))).willReturn(customerServiceImpl.getAllCustomers().get(1));
+
+        mockMvc.perform(post("/api/v1/customer").contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customer)))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"));
     }
 }
