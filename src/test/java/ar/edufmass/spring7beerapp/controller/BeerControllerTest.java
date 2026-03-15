@@ -91,7 +91,7 @@ class BeerControllerTest {
 
     @Test
     void testUpdateBeer() throws Exception {
-        Beer beer = beerServiceImpl.listBeers().get(0);
+        Beer beer = beerServiceImpl.listBeers().getFirst();
 
         mockMvc.perform(put("/api/v1/beer/" + beer.getId())
                         .accept(MediaType.APPLICATION_JSON)
