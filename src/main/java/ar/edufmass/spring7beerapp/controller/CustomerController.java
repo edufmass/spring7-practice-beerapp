@@ -1,6 +1,6 @@
 package ar.edufmass.spring7beerapp.controller;
 
-import ar.edufmass.spring7beerapp.model.Customer;
+import ar.edufmass.spring7beerapp.model.CustomerDTO;
 import ar.edufmass.spring7beerapp.services.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +23,12 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping(CUSTOMER_PATH)
-    public List<Customer> listAllCustomers(){
+    public List<CustomerDTO> listAllCustomers(){
         return customerService.getAllCustomers();
     }
 
     @GetMapping(value = CUSTOMER_PATH_ID)
-    public Customer getCustomerById(@PathVariable UUID customerId) {
+    public CustomerDTO getCustomerById(@PathVariable UUID customerId) {
 
         log.debug("Get Customer by Id - in controller");
 
@@ -36,8 +36,8 @@ public class CustomerController {
     }
 
     @PostMapping(CUSTOMER_PATH)
-    public ResponseEntity<Void> handlePost(@RequestBody Customer customer) {
-        Customer savedCustomer = customerService.saveNewCustomer(customer);
+    public ResponseEntity<Void> handlePost(@RequestBody CustomerDTO customer) {
+        CustomerDTO savedCustomer = customerService.saveNewCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/customer/" + savedCustomer.getId().toString());
@@ -46,7 +46,7 @@ public class CustomerController {
     }
 
     @PutMapping(CUSTOMER_PATH_ID)
-    public ResponseEntity<Void> updateCustomerByID(@PathVariable UUID customerId, @RequestBody Customer customer) {
+    public ResponseEntity<Void> updateCustomerByID(@PathVariable UUID customerId, @RequestBody CustomerDTO customer) {
 
         customerService.updateCustomerById(customerId, customer);
 
@@ -54,7 +54,7 @@ public class CustomerController {
     }
 
     @PatchMapping(CUSTOMER_PATH_ID)
-    public ResponseEntity<Void> patchCustomerById(@PathVariable UUID customerId, @RequestBody Customer customer) {
+    public ResponseEntity<Void> patchCustomerById(@PathVariable UUID customerId, @RequestBody CustomerDTO customer) {
 
         customerService.patchCustomerById(customerId, customer);
 

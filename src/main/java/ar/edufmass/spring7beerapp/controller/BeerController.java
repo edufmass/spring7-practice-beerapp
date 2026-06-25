@@ -1,6 +1,6 @@
 package ar.edufmass.spring7beerapp.controller;
 
-import ar.edufmass.spring7beerapp.model.Beer;
+import ar.edufmass.spring7beerapp.model.BeerDTO;
 import ar.edufmass.spring7beerapp.services.BeerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +23,12 @@ public class BeerController {
     private final BeerService beerService;
 
     @GetMapping(value = BEER_PATH)
-    public List<Beer> listBeers(){
+    public List<BeerDTO> listBeers(){
         return beerService.listBeers();
     }
 
     @GetMapping(BEER_PATH_ID)
-    public Beer getBeerById(@PathVariable UUID beerId){
+    public BeerDTO getBeerById(@PathVariable UUID beerId){
 
         log.debug("Get Beer by Id - in controller");
 
@@ -37,9 +37,9 @@ public class BeerController {
 
     @PostMapping(BEER_PATH)
     //@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> handlePost(@RequestBody Beer beer){
+    public ResponseEntity<Void> handlePost(@RequestBody BeerDTO beer){
 
-        Beer savedBeer = beerService.saveNewBeer(beer);
+        BeerDTO savedBeer = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
@@ -48,7 +48,7 @@ public class BeerController {
     }
 
     @PutMapping(BEER_PATH_ID)
-    public ResponseEntity<Void> updateById(@PathVariable UUID beerId, @RequestBody Beer beer){
+    public ResponseEntity<Void> updateById(@PathVariable UUID beerId, @RequestBody BeerDTO beer){
 
         beerService.updateBeerById(beerId, beer);
 
@@ -56,7 +56,7 @@ public class BeerController {
     }
 
     @PatchMapping(BEER_PATH_ID)
-    public ResponseEntity<Void> patchById(@PathVariable UUID beerId, @RequestBody Beer beer){
+    public ResponseEntity<Void> patchById(@PathVariable UUID beerId, @RequestBody BeerDTO beer){
 
         beerService.patchBeerById(beerId, beer);
 

@@ -1,16 +1,16 @@
 package ar.edufmass.spring7beerapp.services;
 
-import ar.edufmass.spring7beerapp.model.Customer;
+import ar.edufmass.spring7beerapp.model.CustomerDTO;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface CustomerService {
-    Optional<Customer> getCustomerById(UUID uuid);
-    List<Customer> getAllCustomers();
-    Customer saveNewCustomer(Customer customer);
-    void updateCustomerById(UUID customerId, Customer customer);
-    void patchCustomerById(UUID customerId, Customer customer);
+    Optional<CustomerDTO> getCustomerById(UUID uuid);
+    List<CustomerDTO> getAllCustomers();
+    CustomerDTO saveNewCustomer(CustomerDTO customer);
+    void updateCustomerById(UUID customerId, CustomerDTO customer);
+    void patchCustomerById(UUID customerId, CustomerDTO customer);
     void deleteCustomerById(UUID customerId);
 }
