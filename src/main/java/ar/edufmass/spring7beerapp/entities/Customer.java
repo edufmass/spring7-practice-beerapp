@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
-    
+
     @Id
     @GeneratedValue(generator = "UUID")
     @UuidGenerator
