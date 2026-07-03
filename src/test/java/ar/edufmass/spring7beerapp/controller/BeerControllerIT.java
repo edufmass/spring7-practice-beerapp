@@ -1,6 +1,7 @@
 package ar.edufmass.spring7beerapp.controller;
 
 import ar.edufmass.spring7beerapp.entities.Beer;
+import ar.edufmass.spring7beerapp.mappers.BeerMapper;
 import ar.edufmass.spring7beerapp.model.BeerDTO;
 import ar.edufmass.spring7beerapp.repositories.BeerRepository;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,9 @@ public class BeerControllerIT {
 
     @Autowired
     BeerRepository beerRepository;
+
+    @Autowired
+    BeerMapper beerMapper;
 
     @Test
     void testListBeers() {
@@ -77,6 +81,22 @@ public class BeerControllerIT {
 
         Beer beer = beerRepository.findById(savedUUID).get();
         assertThat(beer).isNotNull();
+    }
+
+    @Test
+    void updateExistingBeer() {
+        Beer beer = beerRepository.findAll().get(0);
+        BeerDTO beerDTO = beerMapper.beerToBeerDto(beer);
+        beerDTO.setId(null);
+        beerDTO.setVersion(null);
+        final String beerName = "UPDATED";
+        beerDTO.setBeerName(beerName);
+
+        ResponseEntity<Void> responseEntity = beerController.updateById(beer.getId(), beerDTO);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+        Beer updatedBeer = beerRepository.findById(beer.getId()).get();
+        assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
     }
 
 }
